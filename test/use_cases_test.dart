@@ -1,15 +1,3 @@
-// =============================================================================
-// 🧪 TESTES - Use Cases (camada de domínio / regras de negócio)
-// =============================================================================
-//
-// Aqui validamos as REGRAS DE NEGÓCIO, que é a responsabilidade dos use cases:
-//   - Cadastrar/Alterar: nome obrigatório (vazio -> Failure, sem tocar no disco)
-//   - Remover: id obrigatório
-//   - CalcularRanking: ordena do MAIOR para o MENOR Nível Lenda
-//
-// Os use cases operam sobre o repositório real (com SharedPreferences mock).
-// =============================================================================
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:piramid_game/core/constants.dart';
@@ -43,17 +31,20 @@ void main() {
   group('CadastrarAlunoUseCase', () {
     test('rejeita nome vazio com Failure e NÃO persiste', () async {
       final useCase = CadastrarAlunoUseCase(repo);
-      final r = await useCase(_alunoComTotal(nome: '   ', notaEmCadaCriterio: 1));
+      final r = await useCase(
+        _alunoComTotal(nome: '   ', notaEmCadaCriterio: 1),
+      );
 
       expect(r, isA<Failure>());
       expect((r as Failure).message, contains('nome'));
-      // Nada foi salvo
       expect((repo.buscarTodos() as Success<List<Aluno>>).value, isEmpty);
     });
 
     test('cadastra quando o nome é válido', () async {
       final useCase = CadastrarAlunoUseCase(repo);
-      final r = await useCase(_alunoComTotal(nome: 'Válido', notaEmCadaCriterio: 2));
+      final r = await useCase(
+        _alunoComTotal(nome: 'Válido', notaEmCadaCriterio: 2),
+      );
 
       expect(r, isA<Success>());
       expect((repo.buscarTodos() as Success<List<Aluno>>).value.length, 1);
@@ -78,10 +69,13 @@ void main() {
 
   group('CalcularRankingUseCase', () {
     test('ordena do MAIOR para o MENOR Nível Lenda', () async {
-      // nota 1 em cada -> 15 pontos | nota 3 -> 45 | nota 5 -> 75
-      await repo.cadastrar(_alunoComTotal(nome: 'Baixo', notaEmCadaCriterio: 1));
+      await repo.cadastrar(
+        _alunoComTotal(nome: 'Baixo', notaEmCadaCriterio: 1),
+      );
       await repo.cadastrar(_alunoComTotal(nome: 'Alto', notaEmCadaCriterio: 5));
-      await repo.cadastrar(_alunoComTotal(nome: 'Medio', notaEmCadaCriterio: 3));
+      await repo.cadastrar(
+        _alunoComTotal(nome: 'Medio', notaEmCadaCriterio: 3),
+      );
 
       final useCase = CalcularRankingUseCase(repo);
       final ranking = (useCase() as Success<List<Aluno>>).value;

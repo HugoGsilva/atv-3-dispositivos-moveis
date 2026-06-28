@@ -1,16 +1,6 @@
-// =============================================================================
-// 🎯 CRITERIO ICONS - Ícone visual para cada critério de popularidade
-// =============================================================================
-//
-// Dá identidade a cada um dos 15 critérios (em vez de uma lista de texto puro).
-// Mapeia o `id` do critério (definido em core/constants.dart) para um IconData.
-// Mantido separado da UI para ser reutilizado em cadastro e detalhe.
-// =============================================================================
-
 import 'package:flutter/material.dart';
 
-/// Retorna o ícone correspondente ao [criterioId].
-/// Se o id for desconhecido, cai num ícone neutro de estrela.
+/// Retorna o ícone correspondente ao [criterioId] (estrela neutra se desconhecido).
 IconData criterioIcon(String criterioId) {
   switch (criterioId) {
     case 'resenha':

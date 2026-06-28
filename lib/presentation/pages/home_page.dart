@@ -1,17 +1,3 @@
-// =============================================================================
-// 🏠 HOME PAGE - Tela Principal (Lista de Alunos)
-// =============================================================================
-//
-// 🎓 EXPLICAÇÃO PARA APRESENTAÇÃO:
-// ---------------------------------
-// Tela principal: lista os alunos cadastrados. A UI apenas OBSERVA os signals
-// do HomeViewModel (via Watch) e DISPARA commands; nenhuma lógica de negócio
-// fica aqui. Navegação sempre via go_router.
-//
-// Design: cabeçalho com contagem e destaque do "líder atual" (atalho para o
-// ranking), cards flat e estado vazio acolhedor.
-// =============================================================================
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:signals_flutter/signals_flutter.dart';
@@ -44,12 +30,14 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('PiramidGame'),
+        title: const Text('Pódio da Turma'),
         actions: [
           Watch((context) {
             final dark = _temaViewModel.isDarkMode.value;
             return IconButton(
-              icon: Icon(dark ? Icons.light_mode_rounded : Icons.dark_mode_rounded),
+              icon: Icon(
+                dark ? Icons.light_mode_rounded : Icons.dark_mode_rounded,
+              ),
               onPressed: () => _temaViewModel.alternarTema(),
               tooltip: dark ? 'Tema claro' : 'Tema escuro',
             );
@@ -77,9 +65,9 @@ class _HomePageState extends State<HomePage> {
         if (alunos.isEmpty) return const _EstadoVazio();
 
         // Líder atual (maior Nível Lenda) para o destaque do topo.
-        final lider = (List<Aluno>.from(alunos)
-              ..sort((a, b) => b.nivelLenda.compareTo(a.nivelLenda)))
-            .first;
+        final lider = (List<Aluno>.from(
+          alunos,
+        )..sort((a, b) => b.nivelLenda.compareTo(a.nivelLenda))).first;
 
         return RefreshIndicator(
           onRefresh: () => _viewModel.carregarCommand.execute(),
@@ -88,8 +76,10 @@ class _HomePageState extends State<HomePage> {
             children: [
               _Cabecalho(total: alunos.length, lider: lider),
               const SizedBox(height: 16),
-              Text('Todos os alunos',
-                  style: Theme.of(context).textTheme.titleMedium),
+              Text(
+                'Todos os alunos',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
               const SizedBox(height: 8),
               ...alunos.map(_buildDismissible),
             ],
@@ -121,15 +111,17 @@ class _HomePageState extends State<HomePage> {
             color: Theme.of(context).colorScheme.errorContainer,
             borderRadius: BorderRadius.circular(20),
           ),
-          child: Icon(Icons.delete_rounded,
-              color: Theme.of(context).colorScheme.onErrorContainer),
+          child: Icon(
+            Icons.delete_rounded,
+            color: Theme.of(context).colorScheme.onErrorContainer,
+          ),
         ),
         confirmDismiss: (_) => _confirmarRemocao(aluno.nome),
         onDismissed: (_) {
           _viewModel.removerCommand.execute(aluno.id);
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('${aluno.nome} removido')),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('${aluno.nome} removido')));
         },
         child: AlunoCard(
           aluno: aluno,
@@ -147,7 +139,9 @@ class _HomePageState extends State<HomePage> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Remover aluno'),
-        content: Text('Deseja realmente remover "$nome"? Esta ação não pode ser desfeita.'),
+        content: Text(
+          'Deseja realmente remover "$nome"? Esta ação não pode ser desfeita.',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
@@ -166,9 +160,6 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-// =============================================================================
-// Cabeçalho com contagem + destaque do líder atual
-// =============================================================================
 class _Cabecalho extends StatelessWidget {
   final int total;
   final Aluno lider;
@@ -189,8 +180,11 @@ class _Cabecalho extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Icon(Icons.emoji_events_rounded,
-                  color: Colors.white, size: 18),
+              const Icon(
+                Icons.emoji_events_rounded,
+                color: Colors.white,
+                size: 18,
+              ),
               const SizedBox(width: 6),
               Text(
                 'LÍDER ATUAL',
@@ -203,7 +197,10 @@ class _Cabecalho extends StatelessWidget {
               ),
               const Spacer(),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.white.withValues(alpha: 0.18),
                   borderRadius: BorderRadius.circular(100),
@@ -283,9 +280,6 @@ class _Cabecalho extends StatelessWidget {
   }
 }
 
-// =============================================================================
-// Estado vazio (nenhum aluno cadastrado)
-// =============================================================================
 class _EstadoVazio extends StatelessWidget {
   const _EstadoVazio();
 
@@ -305,12 +299,18 @@ class _EstadoVazio extends StatelessWidget {
                 color: theme.colorScheme.primary.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
-              child: Icon(Icons.groups_rounded,
-                  size: 46, color: theme.colorScheme.primary),
+              child: Icon(
+                Icons.groups_rounded,
+                size: 46,
+                color: theme.colorScheme.primary,
+              ),
             ),
             const SizedBox(height: 20),
-            Text('Nenhum aluno cadastrado',
-                style: theme.textTheme.titleLarge, textAlign: TextAlign.center),
+            Text(
+              'Nenhum aluno cadastrado',
+              style: theme.textTheme.titleLarge,
+              textAlign: TextAlign.center,
+            ),
             const SizedBox(height: 6),
             Text(
               'Toque em "Novo Aluno" para cadastrar o primeiro e começar o ranking.',

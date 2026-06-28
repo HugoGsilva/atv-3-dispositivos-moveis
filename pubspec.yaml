@@ -1,5 +1,5 @@
 name: piramid_game
-description: "PiramidGame IFPR-Pguá - Ranking de Popularidade dos Alunos"
+description: "Pódio da Turma — IFPR-Pguá - Ranking de Popularidade dos Alunos"
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -8,6 +8,8 @@ environment:
 
 dependencies:
   flutter:
+    sdk: flutter
+  flutter_localizations:
     sdk: flutter
   go_router: ^15.1.2
   signals_flutter: ^6.1.1

@@ -1,20 +1,3 @@
-// =============================================================================
-// 📝 CADASTRO PAGE - Tela de Cadastro/Edição de Aluno
-// =============================================================================
-//
-// 🎓 EXPLICAÇÃO PARA APRESENTAÇÃO:
-// ---------------------------------
-// Formulário de cadastro E edição (controlado pelo CadastroViewModel).
-//   - TextFormField → nome, apelido (digitação)
-//   - DropdownButtonFormField → curso, turma/ano (seleção)
-//   - showDatePicker → data de nascimento
-//   - StarRating → cada um dos 15 critérios
-// A ação de salvar é disparada pelo salvarCommand (padrão Command).
-//
-// Design: campos agrupados em "seções" com cabeçalho, resumo do Nível Lenda em
-// tempo real com barra de progresso, e cada critério com seu próprio ícone.
-// =============================================================================
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:signals_flutter/signals_flutter.dart';
@@ -68,16 +51,20 @@ class _CadastroPageState extends State<CadastroPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Watch((context) =>
-            Text(_viewModel.isEdicao.value ? 'Editar Aluno' : 'Novo Aluno')),
+        title: Watch(
+          (context) =>
+              Text(_viewModel.isEdicao.value ? 'Editar Aluno' : 'Novo Aluno'),
+        ),
       ),
       body: Form(
         key: _formKey,
         child: ListView(
           padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
           children: [
-            // ---- Seção: Dados cadastrais -------------------------------------
-            _SectionHeader(icon: Icons.badge_rounded, titulo: 'Dados cadastrais'),
+            _SectionHeader(
+              icon: Icons.badge_rounded,
+              titulo: 'Dados cadastrais',
+            ),
             const SizedBox(height: 12),
             _card(
               theme,
@@ -107,35 +94,39 @@ class _CadastroPageState extends State<CadastroPage> {
                     onChanged: (v) => _viewModel.apelido.value = v,
                   ),
                   const SizedBox(height: 14),
-                  Watch((context) => DropdownButtonFormField<String>(
-                        initialValue: _viewModel.curso.value,
-                        decoration: const InputDecoration(
-                          labelText: 'Curso *',
-                          prefixIcon: Icon(Icons.school_rounded),
-                        ),
-                        items: [
-                          for (final c in kCursosDisponiveis)
-                            DropdownMenuItem(value: c, child: Text(c)),
-                        ],
-                        onChanged: (v) {
-                          if (v != null) _viewModel.curso.value = v;
-                        },
-                      )),
+                  Watch(
+                    (context) => DropdownButtonFormField<String>(
+                      initialValue: _viewModel.curso.value,
+                      decoration: const InputDecoration(
+                        labelText: 'Curso *',
+                        prefixIcon: Icon(Icons.school_rounded),
+                      ),
+                      items: [
+                        for (final c in kCursosDisponiveis)
+                          DropdownMenuItem(value: c, child: Text(c)),
+                      ],
+                      onChanged: (v) {
+                        if (v != null) _viewModel.curso.value = v;
+                      },
+                    ),
+                  ),
                   const SizedBox(height: 14),
-                  Watch((context) => DropdownButtonFormField<int>(
-                        initialValue: _viewModel.turmaAno.value,
-                        decoration: const InputDecoration(
-                          labelText: 'Turma/Ano *',
-                          prefixIcon: Icon(Icons.event_rounded),
-                        ),
-                        items: [
-                          for (final ano in kTurmaAnosDisponiveis.reversed)
-                            DropdownMenuItem(value: ano, child: Text('$ano')),
-                        ],
-                        onChanged: (v) {
-                          if (v != null) _viewModel.turmaAno.value = v;
-                        },
-                      )),
+                  Watch(
+                    (context) => DropdownButtonFormField<int>(
+                      initialValue: _viewModel.turmaAno.value,
+                      decoration: const InputDecoration(
+                        labelText: 'Turma/Ano *',
+                        prefixIcon: Icon(Icons.event_rounded),
+                      ),
+                      items: [
+                        for (final ano in kTurmaAnosDisponiveis.reversed)
+                          DropdownMenuItem(value: ano, child: Text('$ano')),
+                      ],
+                      onChanged: (v) {
+                        if (v != null) _viewModel.turmaAno.value = v;
+                      },
+                    ),
+                  ),
                   const SizedBox(height: 14),
                   Watch((context) {
                     final d = _viewModel.dataNascimento.value;
@@ -146,9 +137,12 @@ class _CadastroPageState extends State<CadastroPage> {
                         decoration: const InputDecoration(
                           labelText: 'Data de Nascimento *',
                           prefixIcon: Icon(Icons.cake_rounded),
+                          suffixIcon: Icon(Icons.calendar_today_rounded),
                         ),
-                        child: Text(_formatarData(d),
-                            style: theme.textTheme.bodyLarge),
+                        child: Text(
+                          _formatarData(d),
+                          style: theme.textTheme.bodyLarge,
+                        ),
                       ),
                     );
                   }),
@@ -158,16 +152,15 @@ class _CadastroPageState extends State<CadastroPage> {
 
             const SizedBox(height: 24),
 
-            // ---- Resumo do Nível Lenda (tempo real) --------------------------
             Watch((context) => _ResumoNivel(nivel: _viewModel.nivelLendaAtual)),
 
             const SizedBox(height: 20),
 
-            // ---- Seção: Critérios -------------------------------------------
             _SectionHeader(
-                icon: Icons.star_rounded,
-                titulo: 'Critérios de popularidade',
-                subtitulo: 'Avalie cada item de 1 a 5 estrelas'),
+              icon: Icons.star_rounded,
+              titulo: 'Critérios de popularidade',
+              subtitulo: 'Avalie cada item de 1 a 5 estrelas',
+            ),
             const SizedBox(height: 12),
 
             Watch((context) {
@@ -189,7 +182,6 @@ class _CadastroPageState extends State<CadastroPage> {
 
             const SizedBox(height: 24),
 
-            // ---- Botão salvar -----------------------------------------------
             Watch((context) {
               final loading = _viewModel.salvarCommand.running.value;
               return SizedBox(
@@ -201,12 +193,16 @@ class _CadastroPageState extends State<CadastroPage> {
                           width: 20,
                           height: 20,
                           child: CircularProgressIndicator(
-                              strokeWidth: 2, color: Colors.white),
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          ),
                         )
                       : const Icon(Icons.check_rounded),
-                  label: Text(_viewModel.isEdicao.value
-                      ? 'Salvar alterações'
-                      : 'Cadastrar aluno'),
+                  label: Text(
+                    _viewModel.isEdicao.value
+                        ? 'Salvar alterações'
+                        : 'Cadastrar aluno',
+                  ),
                 ),
               );
             }),
@@ -217,7 +213,9 @@ class _CadastroPageState extends State<CadastroPage> {
   }
 
   Widget _card(ThemeData theme, {required Widget child}) {
-    return Card(child: Padding(padding: const EdgeInsets.all(16), child: child));
+    return Card(
+      child: Padding(padding: const EdgeInsets.all(16), child: child),
+    );
   }
 
   String _formatarData(DateTime d) =>
@@ -230,6 +228,7 @@ class _CadastroPageState extends State<CadastroPage> {
       firstDate: DateTime(1950),
       lastDate: DateTime.now(),
       helpText: 'Selecione a data de nascimento',
+      initialEntryMode: DatePickerEntryMode.calendarOnly,
     );
     if (escolhida != null) _viewModel.dataNascimento.value = escolhida;
   }
@@ -244,31 +243,36 @@ class _CadastroPageState extends State<CadastroPage> {
     final messenger = ScaffoldMessenger.of(context);
 
     if (resultado is Success) {
-      messenger.showSnackBar(SnackBar(
-        content: Text(_viewModel.isEdicao.value
-            ? 'Aluno atualizado com sucesso!'
-            : 'Aluno cadastrado com sucesso!'),
-      ));
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(
+            _viewModel.isEdicao.value
+                ? 'Aluno atualizado com sucesso!'
+                : 'Aluno cadastrado com sucesso!',
+          ),
+        ),
+      );
       context.pop();
     } else if (resultado is Failure) {
-      messenger.showSnackBar(SnackBar(
-        content: Text(resultado.message),
-        backgroundColor: Theme.of(context).colorScheme.error,
-      ));
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(resultado.message),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ),
+      );
     }
   }
 }
-
-// =============================================================================
-// Componentes visuais privados
-// =============================================================================
 
 class _SectionHeader extends StatelessWidget {
   final IconData icon;
   final String titulo;
   final String? subtitulo;
-  const _SectionHeader(
-      {required this.icon, required this.titulo, this.subtitulo});
+  const _SectionHeader({
+    required this.icon,
+    required this.titulo,
+    this.subtitulo,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -298,7 +302,8 @@ class _ResumoNivel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final progresso = (nivel - kPontuacaoMinima) /
+    final progresso =
+        (nivel - kPontuacaoMinima) /
         (kPontuacaoMaxima - kPontuacaoMinima); // 0..1
     return Container(
       padding: const EdgeInsets.all(16),
@@ -310,16 +315,24 @@ class _ResumoNivel extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(Icons.local_fire_department_rounded,
-                  color: theme.colorScheme.onPrimaryContainer),
+              Icon(
+                Icons.local_fire_department_rounded,
+                color: theme.colorScheme.onPrimaryContainer,
+              ),
               const SizedBox(width: 8),
-              Text('Nível Lenda',
-                  style: theme.textTheme.titleMedium?.copyWith(
-                      color: theme.colorScheme.onPrimaryContainer)),
+              Text(
+                'Nível Lenda',
+                style: theme.textTheme.titleMedium?.copyWith(
+                  color: theme.colorScheme.onPrimaryContainer,
+                ),
+              ),
               const Spacer(),
-              Text('$nivel / $kPontuacaoMaxima',
-                  style: theme.textTheme.titleLarge?.copyWith(
-                      color: theme.colorScheme.onPrimaryContainer)),
+              Text(
+                '$nivel / $kPontuacaoMaxima',
+                style: theme.textTheme.titleLarge?.copyWith(
+                  color: theme.colorScheme.onPrimaryContainer,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 12),
@@ -328,10 +341,12 @@ class _ResumoNivel extends StatelessWidget {
             child: LinearProgressIndicator(
               value: progresso.clamp(0.0, 1.0),
               minHeight: 8,
-              backgroundColor:
-                  theme.colorScheme.onPrimaryContainer.withValues(alpha: 0.15),
-              valueColor:
-                  AlwaysStoppedAnimation<Color>(theme.colorScheme.primary),
+              backgroundColor: theme.colorScheme.onPrimaryContainer.withValues(
+                alpha: 0.15,
+              ),
+              valueColor: AlwaysStoppedAnimation<Color>(
+                theme.colorScheme.primary,
+              ),
             ),
           ),
         ],
@@ -378,8 +393,11 @@ class _CriterioTile extends StatelessWidget {
                   color: theme.colorScheme.primary.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Icon(criterioIcon(id),
-                    size: 20, color: theme.colorScheme.primary),
+                child: Icon(
+                  criterioIcon(id),
+                  size: 20,
+                  color: theme.colorScheme.primary,
+                ),
               ),
               const SizedBox(width: 10),
               Expanded(
@@ -387,10 +405,14 @@ class _CriterioTile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(nome, style: theme.textTheme.titleMedium),
-                    Text(descricao,
-                        style: theme.textTheme.bodyMedium?.copyWith(fontSize: 11.5),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis),
+                    Text(
+                      descricao,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        fontSize: 11.5,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ],
                 ),
               ),

@@ -1,7 +1,3 @@
-// =============================================================================
-// ℹ️ SOBRE O APP - Tela "Sobre o App" (Obrigatória)
-// =============================================================================
-
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 
@@ -14,15 +10,12 @@ class SobreAppPage extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Sobre o App'),
-      ),
+      appBar: AppBar(title: const Text('Sobre o App')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header com ícone
             Center(
               child: Container(
                 width: 90,
@@ -43,7 +36,7 @@ class SobreAppPage extends StatelessWidget {
             const SizedBox(height: 16),
             Center(
               child: Text(
-                'PiramidGame IFPR-Pguá',
+                'Pódio da Turma — IFPR-Pguá',
                 style: theme.textTheme.headlineMedium,
                 textAlign: TextAlign.center,
               ),
@@ -57,7 +50,6 @@ class SobreAppPage extends StatelessWidget {
             ),
             const SizedBox(height: 32),
 
-            // Texto sugerido pela especificação
             _buildSection(
               context,
               icon: Icons.info_outline_rounded,
@@ -112,7 +104,6 @@ class SobreAppPage extends StatelessWidget {
             ),
             const SizedBox(height: 40),
 
-            // Rodapé
             Center(
               child: Text(
                 'Desenvolvido para fins didáticos • IFPR Paranaguá',
@@ -146,18 +137,13 @@ class SobreAppPage extends StatelessWidget {
               children: [
                 Icon(icon, color: theme.colorScheme.primary, size: 22),
                 const SizedBox(width: 10),
-                Text(
-                  title,
-                  style: theme.textTheme.titleLarge,
-                ),
+                Text(title, style: theme.textTheme.titleLarge),
               ],
             ),
             const SizedBox(height: 10),
             Text(
               content,
-              style: theme.textTheme.bodyLarge?.copyWith(
-                height: 1.5,
-              ),
+              style: theme.textTheme.bodyLarge?.copyWith(height: 1.5),
             ),
           ],
         ),

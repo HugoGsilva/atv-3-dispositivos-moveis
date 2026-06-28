@@ -1,16 +1,3 @@
-// =============================================================================
-// 🧪 TESTES - Padrão Command
-// =============================================================================
-//
-// O Command encapsula uma ação e expõe estado reativo (running/result/error).
-// Cobre:
-//   - Command0: sucesso atualiza result, zera error e desliga running
-//   - Command0: Failure preenche error
-//   - Command0: exceção inesperada vira Failure
-//   - proteção contra duplo clique (não executa de novo enquanto running)
-//   - Command1: passa o argumento para a ação
-// =============================================================================
-
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -47,25 +34,27 @@ void main() {
       expect(cmd.running.value, isFalse);
     });
 
-    test('proteção contra duplo clique: ignora a 2ª chamada enquanto roda',
-        () async {
-      var execucoes = 0;
-      final completer = Completer<Result<int>>();
-      final cmd = Command0<int>(() async {
-        execucoes++;
-        return completer.future; // mantém o command "running"
-      });
+    test(
+      'proteção contra duplo clique: ignora a 2ª chamada enquanto roda',
+      () async {
+        var execucoes = 0;
+        final completer = Completer<Result<int>>();
+        final cmd = Command0<int>(() async {
+          execucoes++;
+          return completer.future; // mantém o command running
+        });
 
-      final primeira = cmd.execute(); // dispara e fica pendente
-      expect(cmd.running.value, isTrue);
+        final primeira = cmd.execute();
+        expect(cmd.running.value, isTrue);
 
-      await cmd.execute(); // deve ser ignorada (já está running)
-      expect(execucoes, 1);
+        await cmd.execute(); // ignorada porque já está running
+        expect(execucoes, 1);
 
-      completer.complete(const Success(1)); // libera a primeira
-      await primeira;
-      expect(cmd.running.value, isFalse);
-    });
+        completer.complete(const Success(1));
+        await primeira;
+        expect(cmd.running.value, isFalse);
+      },
+    );
   });
 
   group('Command1', () {

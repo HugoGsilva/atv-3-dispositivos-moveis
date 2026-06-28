@@ -1,19 +1,3 @@
-// =============================================================================
-// 🧪 TESTES - AlunoRepository (camada de dados)
-// =============================================================================
-//
-// Valida a persistência ponta-a-ponta SOBRE o SharedPreferences real
-// (em modo mock, via SharedPreferences.setMockInitialValues).
-//
-// Cobre o CRUD completo do repositório:
-//   - buscarTodos (vazio e populado)
-//   - cadastrar (persiste e soma)
-//   - buscarPorId (encontrado / não encontrado -> Failure)
-//   - alterar (substitui pelo id / id inexistente -> Failure)
-//   - remover (exclui pelo id)
-//   - persistência: dados sobrevivem a uma nova instância do repositório
-// =============================================================================
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:piramid_game/core/result.dart';
@@ -21,7 +5,6 @@ import 'package:piramid_game/data/repositories/aluno_repository.dart';
 import 'package:piramid_game/data/services/shared_preferences_service.dart';
 import 'package:piramid_game/domain/models/aluno.dart';
 
-/// Helper para criar alunos de teste de forma compacta.
 Aluno _aluno({
   String? id,
   String nome = 'Teste',
@@ -44,7 +27,6 @@ void main() {
   late AlunoRepository repo;
 
   setUp(() async {
-    // Zera o "disco" mock antes de cada teste (isolamento)
     SharedPreferences.setMockInitialValues({});
     service = SharedPreferencesService();
     await service.init();
@@ -99,8 +81,7 @@ void main() {
       final r = await repo.alterar(atualizado);
       expect(r, isA<Success>());
 
-      final encontrado =
-          (repo.buscarPorId('id-x') as Success<Aluno>).value;
+      final encontrado = (repo.buscarPorId('id-x') as Success<Aluno>).value;
       expect(encontrado.nome, 'Novo');
       expect(encontrado.curso, 'TADS');
     });
@@ -125,7 +106,7 @@ void main() {
     test('dados persistem em uma nova instância do repositório', () async {
       await repo.cadastrar(_aluno(nome: 'Persistente'));
 
-      // Simula "reabrir o app": novo repositório sobre o MESMO serviço/disco
+      // novo repositório sobre o mesmo serviço, como ao reabrir o app
       final repo2 = AlunoRepository(service);
       final lista = (repo2.buscarTodos() as Success<List<Aluno>>).value;
       expect(lista.length, 1);

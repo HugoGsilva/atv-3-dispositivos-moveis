@@ -1,39 +1,10 @@
-// =============================================================================
-// 🎭 FACADE - Fachada de Use Cases (Camada de Domínio)
-// =============================================================================
-//
-// 🎓 EXPLICAÇÃO PARA APRESENTAÇÃO:
-// ---------------------------------
-// A Facade (Fachada) é um padrão de projeto que SIMPLIFICA o acesso
-// a um conjunto de funcionalidades complexas.
-//
-// SEM Facade (ruim):
-//   A ViewModel precisaria conhecer 6 Use Cases diferentes:
-//   - cadastrarUseCase, alterarUseCase, removerUseCase,
-//   - buscarTodosUseCase, buscarPorIdUseCase, calcularRankingUseCase
-//
-// COM Facade (bom):
-//   A ViewModel conhece APENAS a Facade:
-//   - facade.cadastrar(aluno)
-//   - facade.alterar(aluno)
-//   - facade.remover(id)
-//   - facade.buscarTodos()
-//   - facade.buscarPorId(id)
-//   - facade.calcularRanking()
-//
-// Analogia: A Facade é como a RECEPÇÃO de um hospital.
-//   Você não precisa saber onde fica cada médico.
-//   Fala com a recepcionista e ela te direciona.
-//   A ViewModel é o paciente, os Use Cases são os médicos.
-// =============================================================================
-
 import '../../core/result.dart';
 import '../models/aluno.dart';
 import '../use_cases/aluno_use_cases.dart';
 
 /// Fachada que agrupa todos os Use Cases relacionados a Aluno.
 ///
-/// A ViewModel deve interagir APENAS com esta Facade,
+/// A ViewModel deve interagir apenas com esta Facade,
 /// sem conhecer os Use Cases individuais.
 class AlunoFacade {
   final CadastrarAlunoUseCase _cadastrar;
@@ -50,12 +21,12 @@ class AlunoFacade {
     required BuscarAlunosUseCase buscarTodos,
     required BuscarAlunoPorIdUseCase buscarPorId,
     required CalcularRankingUseCase calcularRanking,
-  })  : _cadastrar = cadastrar,
-        _alterar = alterar,
-        _remover = remover,
-        _buscarTodos = buscarTodos,
-        _buscarPorId = buscarPorId,
-        _calcularRanking = calcularRanking;
+  }) : _cadastrar = cadastrar,
+       _alterar = alterar,
+       _remover = remover,
+       _buscarTodos = buscarTodos,
+       _buscarPorId = buscarPorId,
+       _calcularRanking = calcularRanking;
 
   /// Cadastra um novo aluno.
   Future<Result<void>> cadastrar(Aluno aluno) => _cadastrar(aluno);

@@ -1,14 +1,3 @@
-// =============================================================================
-// 🧪 TESTES - Model Aluno
-// =============================================================================
-//
-// Cobre as regras do domínio que vivem dentro do próprio model:
-//   - nivelLenda = soma das 15 notas (15..75)
-//   - notas default (todas em 1) quando não informadas
-//   - serialização round-trip (toJson -> fromJson) preservando os dados
-//   - copyWith mantendo o id e alterando apenas o que foi passado
-// =============================================================================
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:piramid_game/core/constants.dart';
 import 'package:piramid_game/domain/models/aluno.dart';
@@ -26,7 +15,6 @@ void main() {
       expect(aluno.notas.length, kCriterios.length);
       expect(aluno.notas.length, 15);
       expect(aluno.notas.values.every((n) => n == kNotaMinima), isTrue);
-      // Nível Lenda mínimo = 15 critérios x 1 estrela
       expect(aluno.nivelLenda, kPontuacaoMinima);
       expect(aluno.nivelLenda, 15);
     });
@@ -58,7 +46,7 @@ void main() {
         dataNascimento: DateTime(2001, 1, 1),
       );
       expect(a1.id, isNotEmpty);
-      expect(a1.id, isNot(a2.id)); // ids únicos
+      expect(a1.id, isNot(a2.id));
     });
 
     test('toJson/fromJson preserva todos os dados (round-trip)', () {
@@ -96,13 +84,12 @@ void main() {
 
       final alterado = original.copyWith(nome: 'Maria Eduarda', curso: 'PROD');
 
-      expect(alterado.id, 'mesmo-id'); // id nunca muda
+      expect(alterado.id, 'mesmo-id');
       expect(alterado.nome, 'Maria Eduarda');
       expect(alterado.curso, 'PROD');
-      // campos não passados permanecem
       expect(alterado.turmaAno, original.turmaAno);
       expect(alterado.dataNascimento, original.dataNascimento);
-      // original não foi mutado (imutabilidade)
+      // copyWith não muta o original
       expect(original.nome, 'Maria');
       expect(original.curso, 'MAMB');
     });

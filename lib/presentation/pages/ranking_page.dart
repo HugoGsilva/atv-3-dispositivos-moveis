@@ -1,12 +1,3 @@
-// =============================================================================
-// 🏆 RANKING PAGE - Tela de Ranking de Popularidade
-// =============================================================================
-//
-// Mostra os alunos ordenados por Nível Lenda (maior primeiro). O destaque é um
-// PÓDIO para os 3 primeiros; os demais aparecem numa lista enxuta abaixo.
-// A ordenação é regra de negócio (CalcularRankingUseCase) — a tela só exibe.
-// =============================================================================
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:signals_flutter/signals_flutter.dart';
@@ -33,11 +24,11 @@ class _RankingPageState extends State<RankingPage> {
   }
 
   Color _corPosicao(int posicao) => switch (posicao) {
-        1 => AppColors.gold,
-        2 => AppColors.silver,
-        3 => AppColors.bronze,
-        _ => const Color(0xFF94A3A0),
-      };
+    1 => AppColors.gold,
+    2 => AppColors.silver,
+    3 => AppColors.bronze,
+    _ => const Color(0xFF94A3A0),
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -58,15 +49,19 @@ class _RankingPageState extends State<RankingPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.leaderboard_rounded,
-                      size: 64,
-                      color: theme.colorScheme.primary.withValues(alpha: 0.4)),
+                  Icon(
+                    Icons.leaderboard_rounded,
+                    size: 64,
+                    color: theme.colorScheme.primary.withValues(alpha: 0.4),
+                  ),
                   const SizedBox(height: 16),
                   Text('Ranking vazio', style: theme.textTheme.titleLarge),
                   const SizedBox(height: 6),
-                  Text('Cadastre alunos para disputar o topo do Nível Lenda.',
-                      style: theme.textTheme.bodyMedium,
-                      textAlign: TextAlign.center),
+                  Text(
+                    'Cadastre alunos para disputar o topo do Nível Lenda.',
+                    style: theme.textTheme.bodyMedium,
+                    textAlign: TextAlign.center,
+                  ),
                 ],
               ),
             ),
@@ -99,9 +94,7 @@ class _RankingPageState extends State<RankingPage> {
   }
 }
 
-// =============================================================================
-// Pódio dos 3 primeiros (2º à esquerda, 1º ao centro/maior, 3º à direita)
-// =============================================================================
+// Pódio dos 3 primeiros (2º à esquerda, 1º ao centro/maior, 3º à direita).
 class _Podio extends StatelessWidget {
   final List<Aluno> alunos;
   final Color Function(int) corPosicao;
@@ -132,7 +125,12 @@ class _Podio extends StatelessWidget {
     );
   }
 
-  Widget _coluna(BuildContext context, Aluno? aluno, int posicao, double altura) {
+  Widget _coluna(
+    BuildContext context,
+    Aluno? aluno,
+    int posicao,
+    double altura,
+  ) {
     final theme = Theme.of(context);
     final cor = corPosicao(posicao);
 
@@ -145,8 +143,11 @@ class _Podio extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (posicao == 1)
-          const Icon(Icons.workspace_premium_rounded,
-              color: AppColors.gold, size: 26),
+          const Icon(
+            Icons.workspace_premium_rounded,
+            color: AppColors.gold,
+            size: 26,
+          ),
         const SizedBox(height: 2),
         Stack(
           clipBehavior: Clip.none,
@@ -158,7 +159,10 @@ class _Podio extends StatelessWidget {
                 shape: BoxShape.circle,
                 border: Border.all(color: cor, width: 2.5),
               ),
-              child: AlunoAvatar(nome: aluno.nome, size: posicao == 1 ? 60 : 48),
+              child: AlunoAvatar(
+                nome: aluno.nome,
+                size: posicao == 1 ? 60 : 48,
+              ),
             ),
             Positioned(
               bottom: -8,
@@ -168,11 +172,14 @@ class _Podio extends StatelessWidget {
                   color: cor,
                   borderRadius: BorderRadius.circular(100),
                 ),
-                child: Text('$posicaoº',
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 11,
-                        fontWeight: FontWeight.w800)),
+                child: Text(
+                  '$posicaoº',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
               ),
             ),
           ],
@@ -196,7 +203,10 @@ class _Podio extends StatelessWidget {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [cor.withValues(alpha: 0.85), cor.withValues(alpha: 0.45)],
+              colors: [
+                cor.withValues(alpha: 0.85),
+                cor.withValues(alpha: 0.45),
+              ],
             ),
             borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
           ),
@@ -204,13 +214,18 @@ class _Podio extends StatelessWidget {
           padding: const EdgeInsets.only(top: 8),
           child: Column(
             children: [
-              Text('${aluno.nivelLenda}',
-                  style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w800)),
-              const Text('pts',
-                  style: TextStyle(color: Colors.white, fontSize: 10)),
+              Text(
+                '${aluno.nivelLenda}',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+              const Text(
+                'pts',
+                style: TextStyle(color: Colors.white, fontSize: 10),
+              ),
             ],
           ),
         ),
@@ -219,9 +234,7 @@ class _Podio extends StatelessWidget {
   }
 }
 
-// =============================================================================
-// Linha do ranking (4º lugar em diante)
-// =============================================================================
+// Linha do ranking (4º lugar em diante).
 class _LinhaRanking extends StatelessWidget {
   final int posicao;
   final Aluno aluno;
@@ -240,10 +253,13 @@ class _LinhaRanking extends StatelessWidget {
             children: [
               SizedBox(
                 width: 28,
-                child: Text('$posicaoº',
-                    textAlign: TextAlign.center,
-                    style: theme.textTheme.titleMedium
-                        ?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
+                child: Text(
+                  '$posicaoº',
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
               ),
               const SizedBox(width: 4),
               AlunoAvatar(nome: aluno.nome, size: 42),
@@ -256,24 +272,34 @@ class _LinhaRanking extends StatelessWidget {
                       aluno.apelido.isNotEmpty
                           ? '${aluno.nome} (${aluno.apelido})'
                           : aluno.nome,
-                      style: theme.textTheme.titleMedium?.copyWith(fontSize: 14),
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontSize: 14,
+                      ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    Text('${aluno.curso} • ${aluno.turmaAno}',
-                        style: theme.textTheme.bodyMedium?.copyWith(fontSize: 12)),
+                    Text(
+                      '${aluno.curso} • ${aluno.turmaAno}',
+                      style: theme.textTheme.bodyMedium?.copyWith(fontSize: 12),
+                    ),
                   ],
                 ),
               ),
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.local_fire_department_rounded,
-                      size: 16, color: theme.colorScheme.primary),
+                  Icon(
+                    Icons.local_fire_department_rounded,
+                    size: 16,
+                    color: theme.colorScheme.primary,
+                  ),
                   const SizedBox(width: 3),
-                  Text('${aluno.nivelLenda}',
-                      style: theme.textTheme.titleMedium
-                          ?.copyWith(color: theme.colorScheme.primary)),
+                  Text(
+                    '${aluno.nivelLenda}',
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: theme.colorScheme.primary,
+                    ),
+                  ),
                 ],
               ),
             ],

@@ -1,18 +1,3 @@
-// =============================================================================
-// 🌱 SPLASH PAGE - Tela Inicial do App
-// =============================================================================
-//
-// 🎓 EXPLICAÇÃO PARA APRESENTAÇÃO:
-// ---------------------------------
-// Primeira tela ao abrir o app. Mostra a marca (PiramidGame) sobre um
-// gradiente verde, com animação de fade + scale, e após ~3 segundos navega
-// automaticamente para a Home (context.go('/home')).
-//
-// Design intencional: emblema "squircle" com uma PIRÂMIDE de degraus (alusão
-// ao nome e ao ranking), nome com tracking negativo, "pill" do IFPR e um
-// indicador de progresso fino.
-// =============================================================================
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../theme/app_theme.dart';
@@ -39,10 +24,14 @@ class _SplashPageState extends State<SplashPage>
       vsync: this,
     );
 
-    _fadeAnimation = CurvedAnimation(parent: _controller, curve: Curves.easeOut);
-    _scaleAnimation = Tween<double>(begin: 0.7, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOutBack),
+    _fadeAnimation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeOut,
     );
+    _scaleAnimation = Tween<double>(
+      begin: 0.7,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutBack));
 
     _controller.forward();
 
@@ -71,8 +60,16 @@ class _SplashPageState extends State<SplashPage>
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: isDark
-                ? const [Color(0xFF0B130F), Color(0xFF0F3A28), Color(0xFF177A4F)]
-                : const [Color(0xFF0F7A4D), Color(0xFF1B8A5A), Color(0xFF34D399)],
+                ? const [
+                    Color(0xFF0B130F),
+                    Color(0xFF0F3A28),
+                    Color(0xFF177A4F),
+                  ]
+                : const [
+                    Color(0xFF0F7A4D),
+                    Color(0xFF1B8A5A),
+                    Color(0xFF34D399),
+                  ],
           ),
         ),
         child: SafeArea(
@@ -90,9 +87,10 @@ class _SplashPageState extends State<SplashPage>
                         _LogoEmblem(),
                         const SizedBox(height: 28),
                         const Text(
-                          'PiramidGame',
+                          'Pódio da Turma',
+                          textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: 38,
+                            fontSize: 34,
                             fontWeight: FontWeight.w800,
                             color: Colors.white,
                             letterSpacing: -1,
@@ -112,12 +110,15 @@ class _SplashPageState extends State<SplashPage>
                         // Pill IFPR
                         Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 18, vertical: 9),
+                            horizontal: 18,
+                            vertical: 9,
+                          ),
                           decoration: BoxDecoration(
                             color: Colors.white.withValues(alpha: 0.14),
                             borderRadius: BorderRadius.circular(100),
                             border: Border.all(
-                                color: Colors.white.withValues(alpha: 0.25)),
+                              color: Colors.white.withValues(alpha: 0.25),
+                            ),
                           ),
                           child: const Text(
                             'IFPR – Campus Paranaguá',
@@ -176,7 +177,10 @@ class _LogoEmblem extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white.withValues(alpha: 0.16),
         borderRadius: BorderRadius.circular(34),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.28), width: 1.5),
+        border: Border.all(
+          color: Colors.white.withValues(alpha: 0.28),
+          width: 1.5,
+        ),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

@@ -1,51 +1,14 @@
-// =============================================================================
-// ⚙️ USE CASES - Casos de Uso (Camada de Domínio)
-// =============================================================================
-//
-// 🎓 EXPLICAÇÃO PARA APRESENTAÇÃO:
-// ---------------------------------
-// Use Cases representam as AÇÕES que o sistema pode realizar.
-// Cada Use Case faz UMA COISA SÓ (princípio "S" do SOLID).
-//
-// Pense nos Use Cases como VERBOS do sistema:
-//   - CadastrarAlunoUseCase → "cadastrar aluno"
-//   - AlterarAlunoUseCase → "alterar aluno"
-//   - RemoverAlunoUseCase → "remover aluno"
-//   - BuscarAlunosUseCase → "buscar todos os alunos"
-//   - BuscarAlunoPorIdUseCase → "buscar aluno por ID"
-//   - CalcularRankingUseCase → "calcular ranking"
-//
-// Use Cases NÃO sabem de onde vêm os dados (SharedPreferences? API? Banco?).
-// Eles só usam o Repository.
-//
-// Use Cases NÃO sabem como a tela funciona.
-// Eles só fazem a regra de negócio.
-//
-// Se amanhã mudarmos de SharedPreferences para Firebase, os Use Cases
-// continuam IGUAIS. Isso é Arquitetura Limpa!
-//
-// O método call() permite usar a classe como se fosse uma função:
-//   final resultado = cadastrarUseCase(aluno);  // Em vez de cadastrarUseCase.call(aluno)
-// =============================================================================
-
 import '../../core/result.dart';
 import '../../data/repositories/aluno_repository.dart';
 import '../models/aluno.dart';
 
-/// Cadastra um novo aluno no sistema.
-///
-/// Valida os dados antes de salvar:
-/// - Nome não pode ser vazio
-/// - Curso deve estar na lista de cursos válidos
+/// Cadastra um novo aluno no sistema, validando o nome.
 class CadastrarAlunoUseCase {
   final AlunoRepository _repository;
 
   CadastrarAlunoUseCase(this._repository);
 
-  /// Executa o cadastro do aluno.
-  /// O método call() permite usar: cadastrarUseCase(aluno)
   Future<Result<void>> call(Aluno aluno) async {
-    // Validação de regra de negócio
     if (aluno.nome.trim().isEmpty) {
       return const Failure('O nome do aluno é obrigatório');
     }
@@ -104,11 +67,6 @@ class BuscarAlunoPorIdUseCase {
 }
 
 /// Calcula o ranking dos alunos, ordenando do maior para o menor Nível Lenda.
-///
-/// Este Use Case contém a REGRA DE NEGÓCIO do ranking:
-///   - Busca todos os alunos
-///   - Ordena por nivelLenda (descendente: maior primeiro)
-///   - Retorna a lista ordenada
 class CalcularRankingUseCase {
   final AlunoRepository _repository;
 
@@ -119,9 +77,6 @@ class CalcularRankingUseCase {
 
     switch (resultado) {
       case Success(value: final alunos):
-        // Ordena do MAIOR para o MENOR Nível Lenda
-        // b.nivelLenda.compareTo(a.nivelLenda) → descendente
-        // Se fosse a.compareTo(b) seria ascendente
         final ordenados = List<Aluno>.from(alunos)
           ..sort((a, b) => b.nivelLenda.compareTo(a.nivelLenda));
         return Success(ordenados);

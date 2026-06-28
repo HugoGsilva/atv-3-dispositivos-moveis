@@ -1,12 +1,3 @@
-// =============================================================================
-// 🃏 ALUNO CARD - Card do Aluno na Listagem
-// =============================================================================
-//
-// Card resumido de um aluno na Home: avatar, nome/apelido, curso·turma e o
-// "Nível Lenda" num selo colorido por faixa de pontuação. Visual flat (borda
-// sutil herdada do tema), com hierarquia tipográfica clara.
-// =============================================================================
-
 import 'package:flutter/material.dart';
 import '../../core/constants.dart';
 import '../../domain/models/aluno.dart';
@@ -49,7 +40,9 @@ class AlunoCard extends StatelessWidget {
                     if (aluno.apelido.isNotEmpty)
                       Text(
                         '“${aluno.apelido}”',
-                        style: theme.textTheme.bodyMedium?.copyWith(fontSize: 12.5),
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          fontSize: 12.5,
+                        ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -58,7 +51,11 @@ class AlunoCard extends StatelessWidget {
                       children: [
                         _miniTag(theme, Icons.school_rounded, aluno.curso),
                         const SizedBox(width: 6),
-                        _miniTag(theme, Icons.event_rounded, '${aluno.turmaAno}'),
+                        _miniTag(
+                          theme,
+                          Icons.event_rounded,
+                          '${aluno.turmaAno}',
+                        ),
                       ],
                     ),
                   ],
@@ -90,7 +87,11 @@ class AlunoCard extends StatelessWidget {
           const SizedBox(height: 2),
           Text(
             '${aluno.nivelLenda}',
-            style: TextStyle(color: cor, fontWeight: FontWeight.w800, fontSize: 17),
+            style: TextStyle(
+              color: cor,
+              fontWeight: FontWeight.w800,
+              fontSize: 17,
+            ),
           ),
           Text(
             'de $kPontuacaoMaxima',
@@ -119,9 +120,9 @@ class AlunoCard extends StatelessWidget {
 
   /// Cor do selo conforme a faixa de Nível Lenda (dourado no topo → neutro).
   Color _corNivel(int nivel) {
-    if (nivel >= 60) return AppColors.gold;           // Lenda
-    if (nivel >= 45) return AppColors.primaryLight;   // Esmeralda
+    if (nivel >= 60) return AppColors.gold; // Lenda
+    if (nivel >= 45) return AppColors.primaryLight; // Esmeralda
     if (nivel >= 30) return AppColors.secondaryLight; // Menta
-    return const Color(0xFF94A3A0);                   // Iniciante (neutro)
+    return const Color(0xFF94A3A0); // Iniciante (neutro)
   }
 }

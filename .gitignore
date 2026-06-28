@@ -43,3 +43,15 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Ferramentas de IA / assistentes de código
+.claude/
+CLAUDE.md
+.cursor/
+.cursorrules
+.aider*
+.github/copilot-instructions.md
+
+# Guias de estudo / documentação gerada (uso local, fora do versionamento)
+GUIA-DE-ESTUDO.md
+DOCUMENTacao.md

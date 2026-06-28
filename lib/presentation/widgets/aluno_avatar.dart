@@ -1,16 +1,7 @@
-// =============================================================================
-// 🟢 ALUNO AVATAR - Avatar reutilizável do aluno
-// =============================================================================
-//
-// Componente único usado na lista, no ranking e no detalhe, para manter o
-// MESMO estilo de avatar em todo o app (consistência = design intencional).
-// Mostra a inicial do nome sobre o gradiente da marca (verde), com tamanho e
-// raio configuráveis e um gradiente alternativo opcional (usado no pódio).
-// =============================================================================
-
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 
+/// Avatar com a inicial do nome sobre o gradiente da marca.
 class AlunoAvatar extends StatelessWidget {
   /// Nome do aluno (usado para extrair a inicial).
   final String nome;
@@ -37,7 +28,8 @@ class AlunoAvatar extends StatelessWidget {
       width: size,
       height: size,
       decoration: BoxDecoration(
-        gradient: gradient ??
+        gradient:
+            gradient ??
             (isDark ? AppColors.brandGradientDark : AppColors.brandGradient),
         borderRadius: BorderRadius.circular(size * 0.3),
       ),

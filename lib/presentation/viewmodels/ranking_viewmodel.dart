@@ -1,7 +1,3 @@
-// =============================================================================
-// 🏆 RANKING VIEWMODEL - Controle da Tela de Ranking
-// =============================================================================
-
 import 'package:signals_flutter/signals_flutter.dart';
 import '../../core/command.dart';
 import '../../core/result.dart';
