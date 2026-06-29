@@ -129,9 +129,18 @@ class _HomePageState extends State<HomePage> {
             await context.push('/aluno/${aluno.id}');
             _viewModel.carregarCommand.execute();
           },
+          onDelete: () => _removerComConfirmacao(aluno),
         ),
       ),
     );
+  }
+
+  Future<void> _removerComConfirmacao(Aluno aluno) async {
+    final messenger = ScaffoldMessenger.of(context);
+    final confirmou = await _confirmarRemocao(aluno.nome);
+    if (confirmou != true) return;
+    await _viewModel.removerCommand.execute(aluno.id);
+    messenger.showSnackBar(SnackBar(content: Text('${aluno.nome} removido')));
   }
 
   Future<bool?> _confirmarRemocao(String nome) {

@@ -79,6 +79,8 @@ class _DetalheAlunoPageState extends State<DetalheAlunoPage> {
                     aluno.nome,
                     style: theme.textTheme.headlineMedium,
                     textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   if (aluno.apelido.isNotEmpty)
                     Text(

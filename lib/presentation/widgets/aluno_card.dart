@@ -7,8 +7,9 @@ import 'aluno_avatar.dart';
 class AlunoCard extends StatelessWidget {
   final Aluno aluno;
   final VoidCallback? onTap;
+  final VoidCallback? onDelete;
 
-  const AlunoCard({super.key, required this.aluno, this.onTap});
+  const AlunoCard({super.key, required this.aluno, this.onTap, this.onDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +66,14 @@ class AlunoCard extends StatelessWidget {
 
               // Selo do Nível Lenda
               _nivelSelo(theme, cor),
+
+              if (onDelete != null)
+                IconButton(
+                  icon: const Icon(Icons.delete_outline_rounded),
+                  color: theme.colorScheme.error,
+                  tooltip: 'Remover',
+                  onPressed: onDelete,
+                ),
             ],
           ),
         ),

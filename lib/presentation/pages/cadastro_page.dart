@@ -58,6 +58,7 @@ class _CadastroPageState extends State<CadastroPage> {
       ),
       body: Form(
         key: _formKey,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         child: ListView(
           padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
           children: [
@@ -73,19 +74,21 @@ class _CadastroPageState extends State<CadastroPage> {
                   TextFormField(
                     controller: _nomeController,
                     textCapitalization: TextCapitalization.words,
+                    maxLength: 40,
+                    buildCounter: _semContador,
                     decoration: const InputDecoration(
                       labelText: 'Nome *',
                       prefixIcon: Icon(Icons.person_rounded),
                       hintText: 'Nome completo do aluno',
                     ),
-                    validator: (v) => (v == null || v.trim().isEmpty)
-                        ? 'O nome é obrigatório'
-                        : null,
+                    validator: _validarNome,
                     onChanged: (v) => _viewModel.nome.value = v,
                   ),
                   const SizedBox(height: 14),
                   TextFormField(
                     controller: _apelidoController,
+                    maxLength: 20,
+                    buildCounter: _semContador,
                     decoration: const InputDecoration(
                       labelText: 'Apelido',
                       prefixIcon: Icon(Icons.tag_rounded),
@@ -217,6 +220,23 @@ class _CadastroPageState extends State<CadastroPage> {
       child: Padding(padding: const EdgeInsets.all(16), child: child),
     );
   }
+
+  String? _validarNome(String? v) {
+    final t = (v ?? '').trim();
+    if (t.isEmpty) return 'O nome é obrigatório';
+    if (t.length < 2) return 'Informe ao menos 2 caracteres';
+    // Precisa ter pelo menos uma letra (bloqueia nomes só com números/símbolos).
+    if (!RegExp(r'[A-Za-zÀ-ÿ]').hasMatch(t)) return 'O nome deve conter letras';
+    return null;
+  }
+
+  // Esconde o contador "0/40" que o maxLength mostraria por padrão.
+  static Widget? _semContador(
+    BuildContext context, {
+    required int currentLength,
+    required bool isFocused,
+    required int? maxLength,
+  }) => null;
 
   String _formatarData(DateTime d) =>
       '${d.day.toString().padLeft(2, '0')}/${d.month.toString().padLeft(2, '0')}/${d.year}';
