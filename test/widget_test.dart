@@ -15,7 +15,7 @@ void main() {
     await tester.pumpWidget(const PiramidGameApp());
     await tester.pump(); // primeiro frame: Splash
 
-    expect(find.text('Pódio da Turma'), findsOneWidget);
+    expect(find.text('Pirâmide da Popularidade'), findsOneWidget);
     expect(find.text('IFPR – Campus Paranaguá'), findsOneWidget);
 
     await tester.pump(const Duration(seconds: 3));

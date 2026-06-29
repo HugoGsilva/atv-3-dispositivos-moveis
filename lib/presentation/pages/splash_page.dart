@@ -87,10 +87,10 @@ class _SplashPageState extends State<SplashPage>
                         _LogoEmblem(),
                         const SizedBox(height: 28),
                         const Text(
-                          'Pódio da Turma',
+                          'Pirâmide da Popularidade',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: 34,
+                            fontSize: 30,
                             fontWeight: FontWeight.w800,
                             color: Colors.white,
                             letterSpacing: -1,

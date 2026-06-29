@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Pódio da Turma'),
+        title: const Text('Pirâmide da Popularidade'),
         actions: [
           Watch((context) {
             final dark = _temaViewModel.isDarkMode.value;

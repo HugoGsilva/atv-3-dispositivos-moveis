@@ -36,7 +36,7 @@ class SobreAppPage extends StatelessWidget {
             const SizedBox(height: 16),
             Center(
               child: Text(
-                'Pódio da Turma — IFPR-Pguá',
+                'Pirâmide da Popularidade — IFPR-Pguá',
                 style: theme.textTheme.headlineMedium,
                 textAlign: TextAlign.center,
               ),

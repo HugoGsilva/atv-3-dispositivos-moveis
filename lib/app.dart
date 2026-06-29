@@ -46,7 +46,7 @@ class PiramidGameApp extends StatelessWidget {
 
     return Watch((context) {
       return MaterialApp.router(
-        title: 'Pódio da Turma — IFPR-Pguá',
+        title: 'Pirâmide da Popularidade — IFPR-Pguá',
         debugShowCheckedModeBanner: false,
 
         // Localização pt-BR (calendário, tooltips e textos padrão do Material).

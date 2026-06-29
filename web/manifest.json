@@ -1,6 +1,6 @@
 {
-    "name": "Pódio da Turma",
-    "short_name": "Pódio da Turma",
+    "name": "Pirâmide da Popularidade",
+    "short_name": "Pirâmide da Popularidade",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
