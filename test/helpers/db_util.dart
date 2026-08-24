@@ -1,11 +1,14 @@
-import 'package:sqflite_common_ffi/sqflite_common_ffi.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:piramid_game/data/services/database_service.dart';
 
 /// Habilita o sqflite via FFI (necessário para rodar SQLite fora de um
 /// dispositivo, no ambiente de testes do Dart VM).
+///
+/// Usa o factory *sem isolate*: nos testes de widget, um isolate de banco
+/// deixaria operações pendentes que travam o `pumpAndSettle`.
 void habilitarSqfliteFfi() {
   sqfliteFfiInit();
-  databaseFactory = databaseFactoryFfi;
+  databaseFactory = databaseFactoryFfiNoIsolate;
 }
 
 /// Cria um [DatabaseService] apontando para um banco em memória, isolado a

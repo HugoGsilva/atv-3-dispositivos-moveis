@@ -85,4 +85,10 @@ class DatabaseService {
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
+
+  /// Fecha a conexão com o banco. Usado principalmente para isolar testes
+  /// (um banco em memória só é descartado quando a conexão fecha).
+  Future<void> close() async {
+    await _db.close();
+  }
 }

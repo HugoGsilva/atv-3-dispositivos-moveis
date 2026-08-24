@@ -2,12 +2,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:piramid_game/core/constants.dart';
 import 'package:piramid_game/core/result.dart';
 import 'package:piramid_game/data/repositories/aluno_repository.dart';
+import 'package:piramid_game/data/services/database_service.dart';
 import 'package:piramid_game/domain/facades/aluno_facade.dart';
 import 'package:piramid_game/domain/models/aluno.dart';
 import 'package:piramid_game/domain/use_cases/aluno_use_cases.dart';
 import 'package:piramid_game/presentation/viewmodels/cadastro_viewmodel.dart';
 
-import 'helpers/db_test.dart';
+import 'helpers/db_util.dart';
 
 AlunoFacade _montarFacade(AlunoRepository repo) => AlunoFacade(
   cadastrar: CadastrarAlunoUseCase(repo),
@@ -19,13 +20,18 @@ AlunoFacade _montarFacade(AlunoRepository repo) => AlunoFacade(
 );
 
 void main() {
+  late DatabaseService service;
   late AlunoRepository repo;
   late CadastroViewModel vm;
 
   setUp(() async {
-    final service = await criarDatabaseServiceEmMemoria();
+    service = await criarDatabaseServiceEmMemoria();
     repo = AlunoRepository(service);
     vm = CadastroViewModel(_montarFacade(repo));
+  });
+
+  tearDown(() async {
+    await service.close();
   });
 
   Future<List<Aluno>> alunosSalvos() async =>

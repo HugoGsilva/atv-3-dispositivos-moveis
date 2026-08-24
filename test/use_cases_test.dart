@@ -6,7 +6,7 @@ import 'package:piramid_game/data/services/database_service.dart';
 import 'package:piramid_game/domain/models/aluno.dart';
 import 'package:piramid_game/domain/use_cases/aluno_use_cases.dart';
 
-import 'helpers/db_test.dart';
+import 'helpers/db_util.dart';
 
 Aluno _alunoComTotal({required String nome, required int notaEmCadaCriterio}) {
   return Aluno(
@@ -25,6 +25,10 @@ void main() {
   setUp(() async {
     service = await criarDatabaseServiceEmMemoria();
     repo = AlunoRepository(service);
+  });
+
+  tearDown(() async {
+    await service.close();
   });
 
   group('CadastrarAlunoUseCase', () {

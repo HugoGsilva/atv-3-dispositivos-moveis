@@ -5,7 +5,7 @@ import 'package:piramid_game/data/repositories/aluno_repository.dart';
 import 'package:piramid_game/data/services/database_service.dart';
 import 'package:piramid_game/domain/models/aluno.dart';
 
-import 'helpers/db_test.dart';
+import 'helpers/db_util.dart';
 
 Aluno _aluno({
   String? id,
@@ -31,6 +31,10 @@ void main() {
   setUp(() async {
     service = await criarDatabaseServiceEmMemoria();
     repo = AlunoRepository(service);
+  });
+
+  tearDown(() async {
+    await service.close();
   });
 
   Future<List<Aluno>> todos() async =>
