@@ -1,4 +1,4 @@
-import '../data/services/shared_preferences_service.dart';
+import '../data/services/database_service.dart';
 import '../data/repositories/aluno_repository.dart';
 import '../domain/use_cases/aluno_use_cases.dart';
 import '../domain/facades/aluno_facade.dart';
@@ -27,14 +27,14 @@ T serviceLocator<T>() {
 
 /// Inicializa todas as dependências do app. Deve ser chamado no main()
 /// antes de runApp(): Service → Repository → Use Cases → Facades → ViewModels.
-Future<void> setupServiceLocator() async {
+Future<void> setupServiceLocator({String? dbPath}) async {
   // Services
-  final sharedPrefsService = SharedPreferencesService();
-  await sharedPrefsService.init();
-  registerInstance<SharedPreferencesService>(sharedPrefsService);
+  final databaseService = DatabaseService();
+  await databaseService.init(path: dbPath);
+  registerInstance<DatabaseService>(databaseService);
 
   // Repositories
-  final alunoRepository = AlunoRepository(sharedPrefsService);
+  final alunoRepository = AlunoRepository(databaseService);
   registerInstance<AlunoRepository>(alunoRepository);
 
   // Use Cases
@@ -57,12 +57,12 @@ Future<void> setupServiceLocator() async {
   registerInstance<AlunoFacade>(alunoFacade);
 
   // ViewModels
-  registerInstance<TemaViewModel>(TemaViewModel(sharedPrefsService));
+  registerInstance<TemaViewModel>(TemaViewModel(databaseService));
   registerInstance<HomeViewModel>(HomeViewModel(alunoFacade));
   registerInstance<CadastroViewModel>(CadastroViewModel(alunoFacade));
   registerInstance<RankingViewModel>(RankingViewModel(alunoFacade));
   registerInstance<DetalheViewModel>(DetalheViewModel(alunoFacade));
 
   // Carrega o tema salvo
-  serviceLocator<TemaViewModel>().carregarTema();
+  await serviceLocator<TemaViewModel>().carregarTema();
 }

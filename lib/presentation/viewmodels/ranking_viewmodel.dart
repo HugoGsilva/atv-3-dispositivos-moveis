@@ -19,7 +19,7 @@ class RankingViewModel {
   }
 
   Future<Result<List<Aluno>>> _calcularRanking() async {
-    final resultado = _facade.calcularRanking();
+    final resultado = await _facade.calcularRanking();
 
     if (resultado is Success<List<Aluno>>) {
       ranking.value = resultado.value;

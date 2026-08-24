@@ -19,7 +19,7 @@ class HomeViewModel {
   }
 
   Future<Result<List<Aluno>>> _carregarAlunos() async {
-    final resultado = _facade.buscarTodos();
+    final resultado = await _facade.buscarTodos();
 
     if (resultado is Success<List<Aluno>>) {
       alunos.value = resultado.value;

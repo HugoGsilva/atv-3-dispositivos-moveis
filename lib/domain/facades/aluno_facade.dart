@@ -38,11 +38,11 @@ class AlunoFacade {
   Future<Result<void>> remover(String id) => _remover(id);
 
   /// Busca todos os alunos cadastrados.
-  Result<List<Aluno>> buscarTodos() => _buscarTodos();
+  Future<Result<List<Aluno>>> buscarTodos() => _buscarTodos();
 
   /// Busca um aluno pelo ID.
-  Result<Aluno> buscarPorId(String id) => _buscarPorId(id);
+  Future<Result<Aluno>> buscarPorId(String id) => _buscarPorId(id);
 
   /// Retorna a lista de alunos ordenada por Nível Lenda (ranking).
-  Result<List<Aluno>> calcularRanking() => _calcularRanking();
+  Future<Result<List<Aluno>>> calcularRanking() => _calcularRanking();
 }

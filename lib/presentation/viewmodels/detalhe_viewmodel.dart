@@ -20,7 +20,7 @@ class DetalheViewModel {
   }
 
   Future<Result<Aluno>> _carregar(String id) async {
-    final resultado = _facade.buscarPorId(id);
+    final resultado = await _facade.buscarPorId(id);
 
     if (resultado is Success<Aluno>) {
       aluno.value = resultado.value;

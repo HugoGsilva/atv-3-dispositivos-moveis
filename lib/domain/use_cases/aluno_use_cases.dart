@@ -50,7 +50,7 @@ class BuscarAlunosUseCase {
 
   BuscarAlunosUseCase(this._repository);
 
-  Result<List<Aluno>> call() {
+  Future<Result<List<Aluno>>> call() {
     return _repository.buscarTodos();
   }
 }
@@ -61,7 +61,7 @@ class BuscarAlunoPorIdUseCase {
 
   BuscarAlunoPorIdUseCase(this._repository);
 
-  Result<Aluno> call(String id) {
+  Future<Result<Aluno>> call(String id) {
     return _repository.buscarPorId(id);
   }
 }
@@ -72,8 +72,8 @@ class CalcularRankingUseCase {
 
   CalcularRankingUseCase(this._repository);
 
-  Result<List<Aluno>> call() {
-    final resultado = _repository.buscarTodos();
+  Future<Result<List<Aluno>>> call() async {
+    final resultado = await _repository.buscarTodos();
 
     switch (resultado) {
       case Success(value: final alunos):
