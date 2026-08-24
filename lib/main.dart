@@ -3,7 +3,7 @@ import 'di/service_locator.dart';
 import 'app.dart';
 
 void main() async {
-  // Necessário antes de usar SharedPreferences fora do runApp.
+  // Necessário antes de abrir o banco SQLite fora do runApp.
   WidgetsFlutterBinding.ensureInitialized();
   await setupServiceLocator();
   runApp(const PiramidGameApp());

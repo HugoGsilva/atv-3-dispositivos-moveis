@@ -91,7 +91,7 @@ class SobreAppPage extends StatelessWidget {
               icon: Icons.phone_android_rounded,
               title: 'Armazenamento',
               content:
-                  'Todos os dados são armazenados localmente no dispositivo utilizando SharedPreferences. Nenhum dado é enviado para servidores externos.',
+                  'Todos os dados são armazenados localmente no dispositivo em um banco de dados SQLite. Nenhum dado é enviado para servidores externos.',
             ),
             const SizedBox(height: 20),
 
