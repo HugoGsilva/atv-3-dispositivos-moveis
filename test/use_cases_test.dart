@@ -1,11 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:piramid_game/core/constants.dart';
 import 'package:piramid_game/core/result.dart';
 import 'package:piramid_game/data/repositories/aluno_repository.dart';
-import 'package:piramid_game/data/services/shared_preferences_service.dart';
+import 'package:piramid_game/data/services/database_service.dart';
 import 'package:piramid_game/domain/models/aluno.dart';
 import 'package:piramid_game/domain/use_cases/aluno_use_cases.dart';
+
+import 'helpers/db_test.dart';
 
 Aluno _alunoComTotal({required String nome, required int notaEmCadaCriterio}) {
   return Aluno(
@@ -18,13 +19,11 @@ Aluno _alunoComTotal({required String nome, required int notaEmCadaCriterio}) {
 }
 
 void main() {
-  late SharedPreferencesService service;
+  late DatabaseService service;
   late AlunoRepository repo;
 
   setUp(() async {
-    SharedPreferences.setMockInitialValues({});
-    service = SharedPreferencesService();
-    await service.init();
+    service = await criarDatabaseServiceEmMemoria();
     repo = AlunoRepository(service);
   });
 
@@ -37,7 +36,7 @@ void main() {
 
       expect(r, isA<Failure>());
       expect((r as Failure).message, contains('nome'));
-      expect((repo.buscarTodos() as Success<List<Aluno>>).value, isEmpty);
+      expect((await repo.buscarTodos() as Success<List<Aluno>>).value, isEmpty);
     });
 
     test('cadastra quando o nome é válido', () async {
@@ -47,7 +46,7 @@ void main() {
       );
 
       expect(r, isA<Success>());
-      expect((repo.buscarTodos() as Success<List<Aluno>>).value.length, 1);
+      expect((await repo.buscarTodos() as Success<List<Aluno>>).value.length, 1);
     });
   });
 
@@ -78,16 +77,16 @@ void main() {
       );
 
       final useCase = CalcularRankingUseCase(repo);
-      final ranking = (useCase() as Success<List<Aluno>>).value;
+      final ranking = (await useCase() as Success<List<Aluno>>).value;
 
       expect(ranking.map((a) => a.nome), ['Alto', 'Medio', 'Baixo']);
       expect(ranking.first.nivelLenda, 75);
       expect(ranking.last.nivelLenda, 15);
     });
 
-    test('ranking vazio quando não há alunos', () {
+    test('ranking vazio quando não há alunos', () async {
       final useCase = CalcularRankingUseCase(repo);
-      final ranking = (useCase() as Success<List<Aluno>>).value;
+      final ranking = (await useCase() as Success<List<Aluno>>).value;
       expect(ranking, isEmpty);
     });
   });

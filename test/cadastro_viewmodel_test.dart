@@ -1,13 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:piramid_game/core/constants.dart';
 import 'package:piramid_game/core/result.dart';
 import 'package:piramid_game/data/repositories/aluno_repository.dart';
-import 'package:piramid_game/data/services/shared_preferences_service.dart';
 import 'package:piramid_game/domain/facades/aluno_facade.dart';
 import 'package:piramid_game/domain/models/aluno.dart';
 import 'package:piramid_game/domain/use_cases/aluno_use_cases.dart';
 import 'package:piramid_game/presentation/viewmodels/cadastro_viewmodel.dart';
+
+import 'helpers/db_test.dart';
 
 AlunoFacade _montarFacade(AlunoRepository repo) => AlunoFacade(
   cadastrar: CadastrarAlunoUseCase(repo),
@@ -23,15 +23,13 @@ void main() {
   late CadastroViewModel vm;
 
   setUp(() async {
-    SharedPreferences.setMockInitialValues({});
-    final service = SharedPreferencesService();
-    await service.init();
+    final service = await criarDatabaseServiceEmMemoria();
     repo = AlunoRepository(service);
     vm = CadastroViewModel(_montarFacade(repo));
   });
 
-  List<Aluno> alunosSalvos() =>
-      (repo.buscarTodos() as Success<List<Aluno>>).value;
+  Future<List<Aluno>> alunosSalvos() async =>
+      (await repo.buscarTodos() as Success<List<Aluno>>).value;
 
   test(
     'cadastra via salvarCommand e persiste 15 notas válidas (1..5)',
@@ -44,7 +42,7 @@ void main() {
 
       await vm.salvarCommand.execute();
 
-      final alunos = alunosSalvos();
+      final alunos = await alunosSalvos();
       expect(alunos.length, 1);
       final salvo = alunos.first;
       expect(salvo.nome, 'Coquinha');
@@ -65,7 +63,7 @@ void main() {
 
     expect(vm.salvarCommand.result.value, isA<Failure>());
     expect(vm.salvarCommand.error.value, isNotNull);
-    expect(alunosSalvos(), isEmpty);
+    expect(await alunosSalvos(), isEmpty);
   });
 
   test(
@@ -81,14 +79,14 @@ void main() {
         ),
       );
 
-      vm.carregarParaEdicao(alunosSalvos().first);
+      vm.carregarParaEdicao((await alunosSalvos()).first);
       expect(vm.isEdicao.value, isTrue);
       vm.nome.value = 'Atualizado';
       vm.curso.value = 'MEC';
 
       await vm.salvarCommand.execute();
 
-      final alunos = alunosSalvos();
+      final alunos = await alunosSalvos();
       expect(alunos.length, 1);
       expect(alunos.first.id, 'aluno-1');
       expect(alunos.first.nome, 'Atualizado');

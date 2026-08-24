@@ -1,22 +1,24 @@
 // Testes end-to-end: sobem o app real e dirigem a UI pelas telas, passando por
 // todas as camadas (UI → ViewModel → Facade → Use Case → Repository → Service
-// com SharedPreferences mock).
+// com SQLite em memória via sqflite_common_ffi).
 //
 // O fluxo principal roda numa ÚNICA sessão do app (um pumpWidget só), exercitando
 // todas as funcionalidades em sequência. Isso evita contaminação entre testes
-// causada por singletons globais do app (GoRouter, SharedPreferences).
+// causada por singletons globais do app (GoRouter, Service Locator).
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sqflite_common_ffi/sqflite_common_ffi.dart';
 import 'package:piramid_game/app.dart';
 import 'package:piramid_game/di/service_locator.dart';
 import 'package:piramid_game/presentation/widgets/aluno_card.dart';
 
+import 'helpers/db_test.dart';
+
 void main() {
   setUp(() async {
-    SharedPreferences.setMockInitialValues({});
-    await setupServiceLocator();
+    habilitarSqfliteFfi();
+    await setupServiceLocator(dbPath: inMemoryDatabasePath);
   });
 
   Future<void> bootAteHome(WidgetTester tester) async {

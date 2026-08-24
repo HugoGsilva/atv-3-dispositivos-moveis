@@ -1,12 +1,14 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sqflite_common_ffi/sqflite_common_ffi.dart';
 import 'package:piramid_game/app.dart';
 import 'package:piramid_game/di/service_locator.dart';
 
+import 'helpers/db_test.dart';
+
 void main() {
   setUp(() async {
-    SharedPreferences.setMockInitialValues({});
-    await setupServiceLocator();
+    habilitarSqfliteFfi();
+    await setupServiceLocator(dbPath: inMemoryDatabasePath);
   });
 
   testWidgets('App sobe na Splash e navega para a Home vazia', (
