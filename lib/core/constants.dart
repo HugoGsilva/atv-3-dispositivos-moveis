@@ -125,8 +125,5 @@ const int kPontuacaoMinima = 15;
 /// Pontuação máxima possível (15 critérios × 5 estrelas).
 const int kPontuacaoMaxima = 75;
 
-/// Chave usada no SharedPreferences para salvar os alunos.
-const String kChaveAlunos = 'alunos_json';
-
-/// Chave usada no SharedPreferences para salvar o tema.
+/// Chave usada na tabela `config` para salvar a preferência de tema.
 const String kChaveTemaEscuro = 'tema_escuro';
